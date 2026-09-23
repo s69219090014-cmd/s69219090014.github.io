@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>เข้าสู่ระบบ | คู่มือเรียนสร้างเว็บไซต์ด้วย HTML5 &amp; CSS</title>
+<link rel="stylesheet" href="Style.css">
+</head>
+<body>
+
+<div class="login-wrapper">
+    <div class="login-card">
+        <div class="login-icon">🔒</div>
+        <h1>เข้าสู่ระบบ</h1>
+        <p class="login-sub">คู่มือเรียนสร้างเว็บไซต์ด้วย HTML5 &amp; CSS</p>
+
+        <div class="login-error" id="loginError">
+            กรุณากรอกชื่อผู้ใช้และรหัสผ่านให้ครบถ้วน
+        </div>
+
+        <form id="loginForm" onsubmit="return handleLogin(event)">
+            <div class="login-field">
+                <label for="username">ชื่อผู้ใช้</label>
+                <input type="text" id="username" name="username" placeholder="กรอกชื่อผู้ใช้ของคุณ" autocomplete="username">
+            </div>
+
+            <div class="login-field">
+                <label for="password">รหัสผ่าน</label>
+                <input type="password" id="password" name="password" placeholder="กรอกรหัสผ่านของคุณ" autocomplete="current-password">
+            </div>
+
+            <button type="submit" class="btn-login">เข้าสู่ระบบ</button>
+        </form>
+
+        <p class="login-hint">💡 หน้านี้เป็นตัวอย่างฟอร์ม ยังไม่ได้เชื่อมต่อระบบตรวจสอบสิทธิ์จริง กรอกข้อมูลอะไรก็ได้แล้วกดปุ่มเพื่อเข้าสู่หน้าบทเรียน</p>
+    </div>
+</div>
+
+<script>
+    function handleLogin(event) {
+        event.preventDefault();
+        var username = document.getElementById('username').value.trim();
+        var password = document.getElementById('password').value.trim();
+        var errorBox = document.getElementById('loginError');
+
+        if (username === "" || password === "") {
+            errorBox.style.display = "block";
+            return false;
+        }
+
+        errorBox.style.display = "none";
+        window.location.href = "index.html";
+        return false;
+    }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>บทที่ 8 การออกแบบและสร้างฟอร์ม (Forms)</title>
+<link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+
+<a href="index.html" class="btn-back-fixed">⬅ กลับไปหน้าหลัก</a>
+
+<main class="content">
+<h1>บทที่ 8 การออกแบบและสร้างฟอร์ม (Forms)</h1>
+<img src="Screenshot 2026-09-10 132718.png" alt="ไม่ขึ้น" width="600" height="400">
+<img src="Screenshot 2026-09-10 132729.png" alt="ไม่ขึ้น" width="600" height="400">
+<img src="Screenshot 2026-09-10 132420.png" alt="ไม่ขึ้น" width="600" height="400">
+<img src="Screenshot 2026-09-10 132545.png" alt="ไม่ขึ้น" width="600" height="400">
+<img src="Screenshot 2026-09-10 132700.png" alt="ไม่ขึ้น" width="600" height="400">
+<h2>8.1 องค์ประกอบของฟอร์ม</h2>
+<p>ที่ผ่านมาในบทก่อนๆ เราได้เรียนรู้วิธีการใช้ HTML เพื่อนำเสนอข้อมูลให้ผู้ใช้งานอ่านเพียงอย่างเดียว ซึ่งเปรียบเสมือนการสื่อสารทางเดียว (One-way Communication) เช่น การติดป้ายประกาศโฆษณาบนกำแพง แต่ในการทำเว็บไซต์ธุรกิจหรือแอปพลิเคชันจริง เราจำเป็นต้องรับฟังข้อมูลจากผู้ใช้งานด้วย เช่น การกรอกชื่อผู้ใช้เพื่อเข้าสู่ระบบ การส่งข้อความติดต่อสอบถาม หรือการกรอกที่อยู่เพื่อจัดส่งสินค้า เครื่องมือที่จะมาทำหน้าที่เป็น "แบบสอบถามหรือใบสั่งซื้อ" บนโลกออนไลน์ก็คือ "ฟอร์ม (Forms)" นั่นเอง</p>
+<p>การทำงานของฟอร์มบนหน้าเว็บไซต์นั้น จะเป็นพื้นที่สำหรับรับข้อมูลที่ผู้ใช้พิมพ์เข้ามา จากนั้นจะทำการรวบรวมข้อมูลทั้งหมด ห่อเป็นแพ็กเกจ แล้วส่งไปให้ระบบหลังบ้าน (Server) ประมวลผลต่อไป การสร้างฟอร์มที่ใช้งานง่ายและมีโครงสร้างที่ถูกต้อง จึงเป็นหัวใจสำคัญของการสร้างปฏิสัมพันธ์ (Interactive) ระหว่างผู้ใช้งานกับเว็บไซต์</p>
+<h3>8.1.1 โครงสร้าง &lt;form&gt;</h3>
+<p>ในการเริ่มต้นสร้างพื้นที่รับข้อมูลบนหน้าเว็บ เราจะต้องประกาศอาณาเขตด้วยแท็กคู่ที่ชื่อว่า &lt;form&gt; เสมอ แท็กนี้เปรียบเสมือน "ซองจดหมาย" หรือ "กล่องพัสดุ" ช่องกรอกข้อมูลหรือปุ่มกดทุกชนิดที่เกี่ยวข้องกับการส่งข้อมูลในชุดนั้นๆ จะต้องถูกบรรจุอยู่ภายในคู่แท็ก &lt;form&gt; ... &lt;/form&gt; นี้ หากมีช่องกรอกข้อมูลใดหลุดออกไปอยู่ภายนอกแท็กนี้ เมื่อผู้ใช้กดปุ่มส่งข้อมูล ข้อมูลในช่องนั้นก็จะไม่ถูกนำใส่ซองและจะไม่ถูกส่งไปยังเซิร์ฟเวอร์ด้วย</p>
+<h4>8.1.1.1 การกำหนด Action และ Method (GET/POST)</h4>
+<p>เมื่อเรามีซองจดหมายแล้ว สิ่งสำคัญต่อมาคือการ "จ่าหน้าซอง" และ "เลือกประเภทการส่ง" ซึ่งในแท็ก &lt;form&gt; จะใช้แอตทริบิวต์หลัก 2 ตัวในการจัดการเรื่องนี้ ได้แก่ action และ method แอตทริบิวต์ action ทำหน้าที่เสมือน "ที่อยู่ปลายทางบนหน้าซองจดหมาย" เป็นการระบุ URL หรือเส้นทางของไฟล์ฝั่งเซิร์ฟเวอร์ (เช่น ไฟล์ PHP หรือระบบ Backend) ที่รอรับข้อมูลชุดนี้ไปประมวลผลต่อ หากเราไม่ใส่ action เบราว์เซอร์จะทำการส่งข้อมูลกลับมาที่หน้าเว็บเพจเดิม</p>
+<p>แอตทริบิวต์ method ทำหน้าที่ระบุ "วิธีการจัดส่งข้อมูล" โดยมีรูปแบบที่ใช้กันเป็นมาตรฐานอยู่ 2 รูปแบบหลัก คือ GET และ POST การส่งแบบ GET เปรียบเสมือน "การเขียนข้อความลงบนไปรษณียบัตร" ข้อมูลที่ส่งจะถูกนำไปแปะต่อท้าย URL ทำให้ทุกคนมองเห็นข้อมูลนั้นได้อย่างชัดเจน เหมาะสำหรับการส่งข้อมูลที่ไม่เป็นความลับ เช่น คำค้นหา (Search Query) ส่วนการส่งแบบ POST เปรียบเสมือน "การใส่เอกสารในซองทึบแล้วลงทะเบียน" ข้อมูลจะถูกซ่อนไว้ในเบื้องหลังและสามารถส่งข้อมูลได้ในปริมาณมหาศาล เหมาะสำหรับการส่งข้อมูลส่วนตัวหรือรหัสผ่าน</p>
+<table>
+<tr><th>หัวข้อเปรียบเทียบ</th><th>วิธีการแบบ GET</th><th>วิธีการแบบ POST</th></tr>
+<tr>
+<td><b>การมองเห็น</b></td>
+<td>แสดงข้อมูลบน URL อย่างชัดเจน</td>
+<td>ซ่อนข้อมูลไว้ในเบื้องหลัง มองไม่เห็นบน URL</td>
+</tr>
+<tr>
+<td><b>ความปลอดภัย</b></td>
+<td>ต่ำ (ไม่เหมาะกับข้อมูลลับ)</td>
+<td>สูง (เหมาะสำหรับข้อมูลลับ)</td>
+</tr>
+<tr>
+<td><b>ปริมาณข้อมูล</b></td>
+<td>จำกัด (ส่งได้น้อย)</td>
+<td>ไม่จำกัด (ส่งได้มาก)</td>
+</tr>
+<tr>
+<td><b>ตัวอย่างการใช้งาน</b></td>
+<td>ช่องค้นหา (Search)</td>
+<td>ฟอร์มเข้าสู่ระบบ / รหัสผ่าน</td>
+</tr>
+</table>
+<p class="img-caption">รูปที่ 8.1 เปรียบเทียบการทำงานของ Method แบบ GET และ POST</p>
+<h4>8.1.1.2 การใช้ &lt;label&gt; คู่กับ &lt;input&gt;</h4>
+<p>เพื่อความสะดวก ภายในแท็ก &lt;form&gt; เครื่องมือหลักที่ใช้รับข้อมูลคือแท็ก &lt;input&gt; ซึ่งเปรียบเสมือน "ช่องว่างจุดไข่ปลา" บนกระดาษที่รอให้คนมากรอก แต่ถ้าเรามีแค่ช่องว่างโดยไม่มีข้อความกำกับ ผู้ใช้ก็จะไม่รู้ว่าต้องกรอกอะไร เราจึงต้องใช้แท็ก &lt;label&gt; (ป้ายกำกับ) มาวางคู่กันเสมอ เพื่ออธิบายว่าช่องนี้คืออะไร</p>
+<p>เทคนิคระดับมืออาชีพในการเขียนฟอร์มคือ การเชื่อมโยง &lt;label&gt; เข้ากับ &lt;input&gt; อย่างสมบูรณ์ โดยการตั้งชื่อแอตทริบิวต์ id ให้กับช่อง &lt;input&gt; และนำชื่อนั้นไปใส่ในแอตทริบิวต์ for ของ &lt;label&gt; ผลลัพธ์ของเทคนิคนี้คือ เมื่อผู้ใช้งานนำเมาส์ไปคลิกที่ "ตัวอักษรข้อความ" เคอร์เซอร์จะกระโดดเข้าไปกะพริบรอใน "ช่องกรอกข้อมูล" ทันที ช่วยเพิ่มความสะดวกสบายให้กับผู้ใช้งาน (UX) อย่างมาก โดยเฉพาะบนหน้าจอมือถือที่ช่องกรอกข้อมูลมักมีขนาดเล็ก และยังเป็นมิตรกับโปรแกรมช่วยอ่านของผู้พิการทางสายตาอีกด้วย</p>
+<div class="example-label">
+📝 <strong>ตัวอย่างการปฏิบัติ:</strong> การสร้างโครงสร้างฟอร์มพื้นฐาน ให้นักศึกษาลองพิมพ์โค้ดด้านล่างนี้ เพื่อทดสอบการสร้างฟอร์มที่มีการเชื่อมโยง &lt;label&gt; กับ &lt;input&gt; และตั้งค่าวิธีการส่งแบบ POST
+</div>
+<pre class="code-block">&lt;<span class="tag">!DOCTYPE html</span>&gt;
+&lt;<span class="tag">html</span>&gt;
+&lt;<span class="tag">head</span>&gt;
+  &lt;<span class="tag">title</span>&gt;การสร้างฟอร์มพื้นฐาน&lt;/<span class="tag">title</span>&gt;
+&lt;/<span class="tag">head</span>&gt;
+&lt;<span class="tag">body</span>&gt;
+
+  &lt;<span class="tag">h2</span>&gt;ฟอร์มสมัครสมาชิก&lt;/<span class="tag">h2</span>&gt;
+
+  <span class="comment">&lt;!-- 1. สร้างซองจดหมาย ระบุปลายทาง (action) และวิธีส่งแบบลับ (method="POST") --&gt;</span>
+  &lt;<span class="tag">form</span> <span class="attr">action</span>=<span class="str">"process.php"</span> <span class="attr">method</span>=<span class="str">"POST"</span>&gt;
+
+    <span class="comment">&lt;!-- 2. คู่ที่ 1: ช่องกรอกชื่อผู้ใช้ --&gt;</span>
+    &lt;<span class="tag">div</span>&gt;
+      <span class="comment">&lt;!-- ใช้ for="username" เพื่อเชื่อมโยงกับ input ที่มี id="username" --&gt;</span>
+      &lt;<span class="tag">label</span> <span class="attr">for</span>=<span class="str">"username"</span>&gt;ชื่อผู้ใช้ (Username): &lt;/<span class="tag">label</span>&gt;
+      &lt;<span class="tag">input</span> <span class="attr">type</span>=<span class="str">"text"</span> <span class="attr">id</span>=<span class="str">"username"</span> <span class="attr">name</span>=<span class="str">"user_name"</span>&gt;
+    &lt;/<span class="tag">div</span>&gt;
+
+    &lt;<span class="tag">br</span>&gt;
+
+    <span class="comment">&lt;!-- 3. คู่ที่ 2: ช่องกรอกรหัสผ่าน --&gt;</span>
+    &lt;<span class="tag">div</span>&gt;
+      &lt;<span class="tag">label</span> <span class="attr">for</span>=<span class="str">"password"</span>&gt;รหัสผ่าน (Password): &lt;/<span class="tag">label</span>&gt;
+      &lt;<span class="tag">input</span> <span class="attr">type</span>=<span class="str">"password"</span> <span class="attr">id</span>=<span class="str">"password"</span> <span class="attr">name</span>=<span class="str">"user_password"</span>&gt;
+    &lt;/<span class="tag">div</span>&gt;
+
+    &lt;<span class="tag">br</span>&gt;
+
+    <span class="comment">&lt;!-- 4. ปุ่มสำหรับกดยืนยันเพื่อส่งข้อมูลในฟอร์ม --&gt;</span>
+    &lt;<span class="tag">button</span> <span class="attr">type</span>=<span class="str">"submit"</span>&gt;สมัครสมาชิก&lt;/<span class="tag">button</span>&gt;
+
+  &lt;/<span class="tag">form</span>&gt;
+
+&lt;/<span class="tag">body</span>&gt;
+&lt;/<span class="tag">html</span>&gt;</pre>
+<hr/>
+<h2>8.2 ประเภทของ Input</h2>
+<p>หากเปรียบเทียบแท็ก &lt;form&gt; เป็น "กระดาษแบบสอบถาม" หรือ "ใบสมัครงาน" หนึ่งแผ่น สิ่งที่จะขาดไปไม่ได้เลยก็คือ "ช่องว่างจุดไข่ปลา" ที่เว้นไว้ให้ผู้คนมากรอกข้อมูล ซึ่งในภาษา HTML เราเรียกช่องว่างสำหรับรับข้อมูลเหล่านี้ว่าอินพุต (Input) แต่เนื่องจากข้อมูลบนโลกนี้มีความหลากหลาย เช่น บางช่องต้องการให้กรอกชื่อ บางช่องต้องการให้เลือกเพศ และบางช่องต้องการให้ตั้งรหัสผ่านลับ หน้าตาของช่องรับข้อมูลจึงต้องถูกออกแบบมาให้แตกต่างกันเพื่อตอบสนองการใช้งานที่ถูกต้อง</p>
+<p>ความมหัศจรรย์ของแท็ก &lt;input&gt; ในภาษา HTML คือมันเปรียบเสมือน "กิ้งก่าเปลี่ยนสี" เพียงแค่เราพิมพ์แท็กเดิม แต่เปลี่ยนค่าในแอตทริบิวต์ที่ชื่อว่า type หน้าตาและพฤติกรรมของช่องกรอกข้อมูลบนหน้าเว็บไซต์ก็จะเปลี่ยนรูปโฉมไปเป็นรูปแบบอื่นโดยอัตโนมัติทันที</p>
+<h3>8.2.1 การรับข้อมูลรูปแบบต่างๆ</h3>
+<p>การเลือกประเภทของช่องรับข้อมูลให้ถูกต้อง ไม่เพียงแต่ช่วยให้เว็บไซต์ดูเป็นมืออาชีพ แต่ยังช่วยลดข้อผิดพลาด (Human Error) ที่อาจเกิดขึ้นจากผู้ใช้งานได้อีกด้วย โดยเราสามารถแบ่งกลุ่มของช่องรับข้อมูลที่ใช้งานบ่อยออกเป็น 2 กลุ่มหลัก ได้แก่ กลุ่มข้อความ และกลุ่มตัวเลือก</p>
+<h4>8.2.1.1 ช่องกรอกข้อความ (Text, Password, Email)</h4>
+<p>สำหรับการรับข้อมูลประเภทตัวอักษรหรือตัวเลขที่ผู้ใช้ต้องพิมพ์ผ่านแป้นพิมพ์ เราจะใช้ช่องกรอกข้อความซึ่งมีรูปแบบย่อยที่สำคัญ 3 รูปแบบ ดังนี้</p>
+<table>
+<tr><th>ประเภท</th><th>คุณสมบัติเด่น</th></tr>
+<tr>
+<td><b>Text (type="text")</b></td>
+<td>ช่องกรอกข้อความบรรทัดเดียวแบบมาตรฐานที่สุด เหมาะสำหรับข้อมูลทั่วไปที่ไม่มีความลับ เช่น ชื่อ-นามสกุล</td>
+</tr>
+<tr>
+<td><b>Password (type="password")</b></td>
+<td>ทำหน้าที่เหมือนช่อง Text แต่จะ "พรางตัวอักษร" ให้กลายเป็นจุดกลมดำหรือดอกจัน (*) ทันทีที่พิมพ์</td>
+</tr>
+<tr>
+<td><b>Email (type="email")</b></td>
+<td>ตรวจสอบรูปแบบอีเมลอัตโนมัติ (ต้องมี @ และชื่อโดเมน) และเรียกแป้นพิมพ์ @ บนมือถือให้อัตโนมัติ</td>
+</tr>
+</table>
+<h4>8.2.1.2 ตัวเลือก (Radio, Checkbox, Select Option)</h4>
+<p>ในบางครั้ง เราไม่ต้องการให้ผู้ใช้พิมพ์ข้อความเองยาวๆ แต่อยากเตรียม "ตัวเลือก" ไว้ให้ผู้ใช้คลิกเลือกได้เลย เพื่อความรวดเร็วและเป็นระเบียบ ซึ่งมีเครื่องมือให้เลือกใช้ 3 รูปแบบ ดังนี้</p>
+<table>
+<tr><th>ประเภท</th><th>คุณสมบัติเด่น</th></tr>
+<tr>
+<td><b>Radio Button (type="radio")</b></td>
+<td>หน้าตาเป็นปุ่มวงกลม บังคับให้เลือกได้แค่ข้อเดียวเท่านั้น เหมาะกับคำถามที่ต้องเลือกคำตอบเด็ดขาด เช่น เพศ หรือไซส์เสื้อ</td>
+</tr>
+<tr>
+<td><b>Checkbox (type="checkbox")</b></td>
+<td>หน้าตาเป็นกล่องสี่เหลี่ยม เลือกได้หลายข้อหรือไม่เลือกเลยก็ได้ เหมาะกับคำถามเรื่องงานอดิเรกหรือความสนใจ</td>
+</tr>
+<tr>
+<td><b>Select Option (&lt;select&gt; / &lt;option&gt;)</b></td>
+<td>หน้าตาเป็นเมนู Dropdown ช่วยประหยัดพื้นที่เมื่อมีตัวเลือกจำนวนมาก เช่น รายชื่อจังหวัด</td>
+</tr>
+</table>
+<p class="img-caption">รูปที่ 8.2 แผนผังเปรียบเทียบประเภทของช่องรับข้อมูล (Input Types)</p>
+<p>การประยุกต์ใช้งานเพื่อประสบการณ์ผู้ใช้ (UX) ที่ดีเยี่ยม การตัดสินใจเลือกใช้เครื่องมือรับข้อมูลทั้ง 3 รูปแบบนี้ ไม่ได้ขึ้นอยู่กับความสวยงามหรือความชอบส่วนตัวของนักออกแบบเพียงอย่างเดียว แต่จะต้องคำนึงถึง "ประสบการณ์ผู้ใช้งาน (User Experience: UX)" และ "ความถูกต้องของข้อมูล (Data Accuracy)" เป็นหัวใจสำคัญ</p>
+<p>หากนักพัฒนาเลือกใช้เครื่องมือผิดประเภท อาจส่งผลให้ระบบฐานข้อมูลหลังบ้านพังทลายได้ในทันที ตัวอย่างเช่น หากเราใช้ Checkbox (ที่อนุญาตให้เลือกหลายข้อ) กับคำถามที่ต้องการคำตอบเด็ดขาดอย่าง "เพศ" หรือ "ไซส์เสื้อ" ผู้ใช้งานอาจจะเผลอกดติ๊กเลือกมาทั้งเพศชายและเพศหญิงพร้อมกัน ทำให้ข้อมูลเกิดความขัดแย้ง ในทางกลับกัน หากเรานำ Radio Button ไปใช้กับคำถามเรื่อง "งานอดิเรก" ผู้ใช้ก็จะถูกบังคับให้ตอบได้แค่ข้อเดียว ทำให้เราสูญเสียโอกาสในการเก็บข้อมูลความสนใจเชิงลึกของลูกค้าไปอย่างน่าเสียดาย</p>
+<p>นอกจากนี้ ในยุคที่ผู้ใช้งานส่วนใหญ่เข้าเว็บไซต์ผ่านหน้าจอสมาร์ตโฟน (Mobile First Design) การบริหารจัดการพื้นที่บนหน้าจอถือเป็นเรื่องสำคัญที่สุด การนำ Select Option (Dropdown Menu) มาใช้กับตัวเลือกที่มีจำนวนตั้งแต่ 5 รายการขึ้นไป จะถือเป็นกลยุทธ์ที่ชาญฉลาด เพราะนอกจากจะช่วยประหยัดพื้นที่และทำให้แบบฟอร์มดูสะอาดตาแล้ว เว็บเบราว์เซอร์บนสมาร์ตโฟนยังมีระบบเด้งหน้าต่างวงล้อตัวเลือก (Native Picker) ขึ้นมาช่วยอำนวยความสะดวกให้ผู้ใช้งานใช้นิ้วปัดเลื่อนหาข้อมูลได้อย่างรวดเร็วอีกด้วย ท้ายที่สุดแล้ว การเลือกเครื่องมือรับข้อมูลให้ "ถูกฝาถูกตัว" จึงเป็นกุญแจสำคัญที่ทำให้เว็บไซต์ของเราดูเป็นมืออาชีพและลดความผิดพลาดจากผู้ใช้งานได้อย่างสมบูรณ์แบบ</p>
+<div class="example-label">
+📝 <strong>ตัวอย่างการปฏิบัติ:</strong> การสร้างฟอร์มที่มี Input หลากหลายประเภท ให้นักศึกษาลองพิมพ์โค้ดด้านล่างนี้ และทดลองกรอกข้อมูลให้ครบทุกช่อง สังเกตความแตกต่างเมื่อพิมพ์ในช่องรหัสผ่าน การพยายามคลิกปุ่มวงกลมหลายๆ ปุ่ม และการติ๊กถูกที่กล่องสี่เหลี่ยม
+</div>
+<pre class="code-block">&lt;<span class="tag">!DOCTYPE html</span>&gt;
+&lt;<span class="tag">html</span>&gt;
+&lt;<span class="tag">head</span>&gt;
+  &lt;<span class="tag">title</span>&gt;ตัวอย่างประเภท Input&lt;/<span class="tag">title</span>&gt;
+&lt;/<span class="tag">head</span>&gt;
+&lt;<span class="tag">body</span>&gt;
+
+  &lt;<span class="tag">h2</span>&gt;กรอกประวัติส่วนตัว&lt;/<span class="tag">h2</span>&gt;
+
+  &lt;<span class="tag">form</span> <span class="attr">action</span>=<span class="str">"save_profile.php"</span> <span class="attr">method</span>=<span class="str">"POST"</span>&gt;
+
+    <span class="comment">&lt;!-- 1. ช่องกรอกข้อความทั่วไป --&gt;</span>
+    &lt;<span class="tag">label</span>&gt;ชื่อ-นามสกุล: &lt;/<span class="tag">label</span>&gt;
+    &lt;<span class="tag">input</span> <span class="attr">type</span>=<span class="str">"text"</span> <span class="attr">name</span>=<span class="str">"fullname"</span>&gt;
+    &lt;<span class="tag">br</span>&gt;&lt;<span class="tag">br</span>&gt;
+
+    <span class="comment">&lt;!-- 2. ช่องกรอกรหัสผ่าน (ซ่อนตัวอักษร) --&gt;</span>
+    &lt;<span class="tag">label</span>&gt;รหัสผ่านลับ: &lt;/<span class="tag">label</span>&gt;
+    &lt;<span class="tag">input</span> <span class="attr">type</span>=<span class="str">"password"</span> <span class="attr">name</span>=<span class="str">"secret_code"</span>&gt;
+    &lt;<span class="tag">br</span>&gt;&lt;<span class="tag">br</span>&gt;
+
+    <span class="comment">&lt;!-- 3. ช่องกรอกอีเมล (บังคับต้องมี @) --&gt;</span>
+    &lt;<span class="tag">label</span>&gt;อีเมลติดต่อ: &lt;/<span class="tag">label</span>&gt;
+    &lt;<span class="tag">input</span> <span class="attr">type</span>=<span class="str">"email"</span> <span class="attr">name</span>=<span class="str">"user_email"</span>&gt;
+    &lt;<span class="tag">br</span>&gt;&lt;<span class="tag">br</span>&gt;
+
+    <span class="comment">&lt;!-- 4. ปุ่มวงกลม (Radio) เลือกได้ข้อเดียว --&gt;</span>
+    <span class="comment">&lt;!-- หมายเหตุ: การจะทำให้ระบบรู้ว่าเป็นคำถามข้อเดียวกัน ต้องตั้ง name ให้เหมือนกัน --&gt;</span>
+    &lt;<span class="tag">label</span>&gt;เพศ: &lt;/<span class="tag">label</span>&gt;
+    &lt;<span class="tag">input</span> <span class="attr">type</span>=<span class="str">"radio"</span> <span class="attr">id</span>=<span class="str">"male"</span> <span class="attr">name</span>=<span class="str">"gender"</span> <span class="attr">value</span>=<span class="str">"male"</span>&gt;
+    &lt;<span class="tag">label</span> <span class="attr">for</span>=<span class="str">"male"</span>&gt;ชาย&lt;/<span class="tag">label</span>&gt;
+
+    &lt;<span class="tag">input</span> <span class="attr">type</span>=<span class="str">"radio"</span> <span class="attr">id</span>=<span class="str">"female"</span> <span class="attr">name</span>=<span class="str">"gender"</span> <span class="attr">value</span>=<span class="str">"female"</span>&gt;
+    &lt;<span class="tag">label</span> <span class="attr">for</span>=<span class="str">"female"</span>&gt;หญิง&lt;/<span class="tag">label</span>&gt;
+    &lt;<span class="tag">br</span>&gt;&lt;<span class="tag">br</span>&gt;
+
+    <span class="comment">&lt;!-- 5. กล่องสี่เหลี่ยม (Checkbox) เลือกได้หลายข้อ --&gt;</span>
+    &lt;<span class="tag">label</span>&gt;งานอดิเรกที่ชอบ: &lt;/<span class="tag">label</span>&gt;
+    &lt;<span class="tag">input</span> <span class="attr">type</span>=<span class="str">"checkbox"</span> <span class="attr">id</span>=<span class="str">"hobby1"</span> <span class="attr">name</span>=<span class="str">"hobbies"</span> <span class="attr">value</span>=<span class="str">"reading"</span>&gt;
+    &lt;<span class="tag">label</span> <span class="attr">for</span>=<span class="str">"hobby1"</span>&gt;อ่านหนังสือ&lt;/<span class="tag">label</span>&gt;
+
+    &lt;<span class="tag">input</span> <span class="attr">type</span>=<span class="str">"checkbox"</span> <span class="attr">id</span>=<span class="str">"hobby2"</span> <span class="attr">name</span>=<span class="str">"hobbies"</span> <span class="attr">value</span>=<span class="str">"gaming"</span>&gt;
+    &lt;<span class="tag">label</span> <span class="attr">for</span>=<span class="str">"hobby2"</span>&gt;เล่นเกม&lt;/<span class="tag">label</span>&gt;
+    &lt;<span class="tag">br</span>&gt;&lt;<span class="tag">br</span>&gt;
+
+    <span class="comment">&lt;!-- 6. เมนูแบบ Dropdown --&gt;</span>
+    &lt;<span class="tag">label</span>&gt;เลือกจังหวัด: &lt;/<span class="tag">label</span>&gt;
+    &lt;<span class="tag">select</span> <span class="attr">name</span>=<span class="str">"province"</span>&gt;
+      &lt;<span class="tag">option</span> <span class="attr">value</span>=<span class="str">"bkk"</span>&gt;กรุงเทพมหานคร&lt;/<span class="tag">option</span>&gt;
+      &lt;<span class="tag">option</span> <span class="attr">value</span>=<span class="str">"cnx"</span>&gt;เชียงใหม่&lt;/<span class="tag">option</span>&gt;
+      &lt;<span class="tag">option</span> <span class="attr">value</span>=<span class="str">"hkt"</span>&gt;ภูเก็ต&lt;/<span class="tag">option</span>&gt;
+    &lt;/<span class="tag">select</span>&gt;
+    &lt;<span class="tag">br</span>&gt;&lt;<span class="tag">br</span>&gt;
+
+    &lt;<span class="tag">button</span> <span class="attr">type</span>=<span class="str">"submit"</span>&gt;ส่งข้อมูล&lt;/<span class="tag">button</span>&gt;
+  &lt;/<span class="tag">form</span>&gt;
+
+&lt;/<span class="tag">body</span>&gt;
+&lt;/<span class="tag">html</span>&gt;</pre>
+<hr/>
+<h2>8.3 การตรวจสอบข้อมูล (Validation)</h2>
+<p>ในโลกของการเก็บข้อมูลจากผู้ใช้งาน "ความถูกต้องและครบถ้วน" คือหัวใจสำคัญที่สุด ลองจินตนาการว่าเราเปิดร้านขายของออนไลน์และให้ลูกค้ากรอกที่อยู่สำหรับจัดส่งสินค้า หากลูกค้าลืมกรอกบ้านเลขที่ หรือเผลอกรอกตัวอักษรลงในช่องเบอร์โทรศัพท์ เมื่อข้อมูลที่ผิดพลาดเหล่านี้ถูกส่งมาถึงเรา ย่อมก่อให้เกิดความเสียหาย เสียเวลา และอาจทำให้การจัดส่งล้มเหลวได้</p>
+<p>เพื่อป้องกันปัญหาดังกล่าว นักพัฒนาจึงต้องสร้างระบบ "พนักงานตรวจเอกสาร" หรือที่ในทางคอมพิวเตอร์เรียกว่า การตรวจสอบข้อมูล (Validation) เอาไว้ที่หน้าเว็บไซต์เสมอ ระบบนี้จะทำหน้าที่ดักจับและตรวจสอบความถูกต้องของข้อมูลทุกช่องในฟอร์มทันทีที่ผู้ใช้กดปุ่มส่ง (Submit) หากพบว่าข้อมูลไม่ครบหรือผิดเงื่อนไข ระบบจะไม่อนุญาตให้ส่งข้อมูลนั้นออกไป และจะขึ้นข้อความแจ้งเตือนให้ผู้ใช้งานแก้ไขให้ถูกต้องเสียก่อน</p>
+<h3>8.3.1 การคุมข้อมูลเบื้องต้น</h3>
+<p>ในอดีตการจะสร้างระบบตรวจสอบข้อมูลบนหน้าเว็บนั้นถือเป็นเรื่องที่ยุ่งยากมาก เพราะนักพัฒนาจะต้องเขียนโค้ดภาษา JavaScript ที่ซับซ้อนเพื่อมาดักจับทีละช่อง แต่ในยุคปัจจุบัน ภาษา HTML5 ได้พัฒนาระบบตรวจสอบข้อมูลอัตโนมัติที่ฝังมาให้ในตัวเว็บเบราว์เซอร์เลย (Built-in Form Validation) ทำให้เราสามารถควบคุมเงื่อนไขต่างๆ ได้ง่ายๆ เพียงแค่เติมแอตทริบิวต์ (Attribute) สั้นๆ ลงไปในแท็ก &lt;input&gt; ของเรา</p>
+<h4>8.3.1.1 การใช้ Attribute required, min, max</h4>
+<p>แอตทริบิวต์สำหรับตรวจสอบข้อมูลที่นักพัฒนาเว็บทุกคนต้องรู้จักและใช้งานบ่อยที่สุด มีอยู่ 3 ตัวหลักๆ ซึ่งทำหน้าที่กำหนดกฎเกณฑ์ที่แตกต่างกันออกไป ดังนี้</p>
+<table>
+<tr><th>Attribute</th><th>หน้าที่การทำงาน</th></tr>
+<tr>
+<td><b>required</b></td>
+<td>บังคับกรอกข้อมูล เปรียบเสมือนเครื่องหมายดอกจันสีแดง (*) บนเอกสารกระดาษ หากปล่อยว่างแล้วกดส่ง เบราว์เซอร์จะระงับการส่งและเด้งข้อความเตือน</td>
+</tr>
+<tr>
+<td><b>min / max</b></td>
+<td>กำหนดขอบเขตค่าต่ำสุดและสูงสุด มักใช้กับ type="number" หรือ type="date" เปรียบเสมือนป้ายจำกัดความสูงของผู้เล่นเครื่องเล่นในสวนสนุก</td>
+</tr>
+</table>
+<p class="img-caption">รูปที่ 8.3 แผนผังการทำงานของระบบตรวจสอบข้อมูลด้วย HTML5 (Form Validation)</p>
+<div class="example-label">
+📝 <strong>ตัวอย่างการปฏิบัติ:</strong> การใช้ Validation คุมความถูกต้องของฟอร์ม ให้นักศึกษาลองพิมพ์โค้ดด้านล่างนี้ และทดลองกดปุ่ม "ส่งข้อมูล" โดยที่ยังไม่กรอกข้อมูลใดๆ หรือลองกรอกอายุเป็น 10 ปี เพื่อสังเกตการทำงานของระบบแจ้งเตือนอัตโนมัติจากเว็บเบราว์เซอร์
+</div>
+<pre class="code-block">&lt;<span class="tag">!DOCTYPE html</span>&gt;
+&lt;<span class="tag">html</span>&gt;
+&lt;<span class="tag">head</span>&gt;
+  &lt;<span class="tag">title</span>&gt;ทดสอบการใช้ Validation&lt;/<span class="tag">title</span>&gt;
+&lt;/<span class="tag">head</span>&gt;
+&lt;<span class="tag">body</span>&gt;
+
+  &lt;<span class="tag">h2</span>&gt;แบบฟอร์มลงทะเบียนเข้างานสัมมนา&lt;/<span class="tag">h2</span>&gt;
+
+  &lt;<span class="tag">form</span> <span class="attr">action</span>=<span class="str">"process_register.php"</span> <span class="attr">method</span>=<span class="str">"POST"</span>&gt;
+
+    <span class="comment">&lt;!-- 1. ช่องกรอกชื่อ: ใช้ required เพื่อบังคับว่า "ห้ามปล่อยว่างเด็ดขาด" --&gt;</span>
+    &lt;<span class="tag">label</span>&gt;ชื่อ-นามสกุล (บังคับ): &lt;/<span class="tag">label</span>&gt;
+    &lt;<span class="tag">input</span> <span class="attr">type</span>=<span class="str">"text"</span> <span class="attr">name</span>=<span class="str">"fullname"</span> <span class="attr">required</span>&gt;
+    &lt;<span class="tag">br</span>&gt;&lt;<span class="tag">br</span>&gt;
+
+    <span class="comment">&lt;!-- 2. ช่องกรอกอายุ: บังคับกรอก (required) และคุมตัวเลขต้องอยู่ระหว่าง 18 ถึง 60 --&gt;</span>
+    &lt;<span class="tag">label</span>&gt;อายุ (ต้องมีอายุ 18 - 60 ปีเท่านั้น): &lt;/<span class="tag">label</span>&gt;
+    &lt;<span class="tag">input</span> <span class="attr">type</span>=<span class="str">"number"</span> <span class="attr">name</span>=<span class="str">"user_age"</span> <span class="attr">min</span>=<span class="str">"18"</span> <span class="attr">max</span>=<span class="str">"60"</span> <span class="attr">required</span>&gt;
+    &lt;<span class="tag">br</span>&gt;&lt;<span class="tag">br</span>&gt;
+
+    <span class="comment">&lt;!-- 3. ช่องกรอกอีเมล: บังคับรูปแบบอีเมลด้วย type="email" และบังคับกรอกด้วย required --&gt;</span>
+    &lt;<span class="tag">label</span>&gt;อีเมล: &lt;/<span class="tag">label</span>&gt;
+    &lt;<span class="tag">input</span> <span class="attr">type</span>=<span class="str">"email"</span> <span class="attr">name</span>=<span class="str">"user_email"</span> <span class="attr">required</span>&gt;
+    &lt;<span class="tag">br</span>&gt;&lt;<span class="tag">br</span>&gt;
+
+    &lt;<span class="tag">button</span> <span class="attr">type</span>=<span class="str">"submit"</span>&gt;ส่งข้อมูล&lt;/<span class="tag">button</span>&gt;
+  &lt;/<span class="tag">form</span>&gt;
+
+&lt;/<span class="tag">body</span>&gt;
+&lt;/<span class="tag">html</span>&gt;</pre>
+<hr/>
+<h2>สรุปท้ายบท</h2>
+<div class="summary-box">
+<p>เนื้อหาในบทนี้ได้เชื่อมโยงทฤษฎีการสื่อสารแบบสองทาง (Two-way Communication) เข้ากับการทำงานจริงของเว็บไซต์ผ่านกระบวนการออกแบบและสร้างแบบฟอร์ม (Forms) การสร้างพื้นที่รับข้อมูลด้วยแท็ก &lt;form&gt; นั้น ทำให้เว็บไซต์สามารถรับฟังและรวบรวมข้อมูลจากผู้ใช้งานเพื่อนำไปประมวลผลได้อย่างสมบูรณ์โดยต้องอาศัยแอตทริบิวต์ที่เป็นหัวใจสำคัญอย่าง action และ method เป็นตัวเชื่อมโยงเพื่อระบุเป้าหมายปลายทางและวิธีการจัดส่งข้อมูลอย่างแม่นยำ พร้อมทั้งต้องแยกแยะรูปแบบการส่งข้อมูลทั้งแบบ GET ที่เปิดเผยข้อมูลผ่าน URL สำหรับข้อมูลทั่วไป และแบบ POST ที่ซ่อนข้อมูลไว้เบื้องหลังสำหรับข้อมูลส่วนตัว เพื่อสร้าง "ซองจดหมายและพัสดุ" ที่นำส่งข้อมูลไปยังระบบเซิร์ฟเวอร์ได้อย่างถูกต้องและปลอดภัย</p>
+<p>ในขณะเดียวกัน การควบคุมประเภทของช่องรับข้อมูล (Input Types) ถือเป็นกุญแจสำคัญที่สุดในการรองรับข้อมูลที่หลากหลายและลดความผิดพลาดจากผู้ใช้งาน หลักการที่สำคัญที่สุดในกระบวนการนี้คือการจัดการช่องกรอกข้อมูลผ่านแท็ก &lt;input&gt; ร่วมกับการจับคู่ป้ายกำกับด้วยแท็ก &lt;label&gt; เสมอเพื่อเพิ่มความสะดวกในการใช้งาน โดยต้องปรับเปลี่ยนแอตทริบิวต์ type ให้ตรงตามการใช้งาน เช่น text, password, email ไปจนถึงกลุ่มตัวเลือกอย่าง radio, checkbox และ select ซึ่งเปรียบเสมือนการออกแบบกระดาษแบบสอบถามให้ผู้ใช้เลือกตอบได้ตรงประเด็น หากละเลยหลักการข้อนี้ เว็บเบราว์เซอร์จะไม่สามารถจัดเตรียมสภาพแวดล้อมการรับข้อมูลที่เหมาะสมได้ และจะเกิดปัญหาที่ทำให้ผู้ใช้งานสับสน กรอกข้อมูลผิดพลาด หรือส่งข้อมูลที่ไม่ตรงรูปแบบเข้าสู่ระบบหลังบ้านจนอาจเกิดความเสียหายได้</p>
+<p>ท้ายที่สุด การนำโครงสร้างฟอร์มรับข้อมูลมาประกอบกับการคุมความถูกต้องด้วยระบบตรวจสอบข้อมูล (Built-in Form Validation) อัตโนมัติของ HTML5 ผ่านแอตทริบิวต์คัดกรอง เช่น required, min และ max ทำให้เกิดเป็นรูปแบบการป้องกันความผิดพลาดที่สมบูรณ์ ผู้พัฒนาโปรแกรมได้เรียนรู้วิธีการออกแบบระบบพนักงานตรวจเอกสารหน้าด่าน ที่คอยดักจับและแจ้งเตือนผู้ใช้งานทันทีก่อนข้อมูลจะถูกส่งออกไป การฝึกฝนเขียนโค้ดสร้างฟอร์มบูรณาการ เช่น การทำหน้าต่างลงทะเบียนสมัครสมาชิก หรือการออกแบบใบสั่งซื้อสินค้า จะช่วยพัฒนากระบวนการคิดในการจัดระเบียบการรับส่งข้อมูลให้เป็นระบบ ซึ่งเป็นพื้นฐานที่แข็งแกร่งก่อนจะก้าวเข้าสู่การนำ "ภาษา JavaScript" เข้ามาทำหน้าที่เป็นสมองกลเพื่อตรวจสอบเงื่อนไขที่ซับซ้อนและสร้างการโต้ตอบ (Interactive) บนหน้าเว็บไซต์ในบทเรียนถัดไป</p>
+</div>
+
+</main>
+
+<rfooter class="site-footer">
+    <p>© 2026 คู่มือเรียนการสร้างเว็บไซต์ด้วย HTML5 และ CSS</p>
+</foote>
+
+</body>
+</html>
